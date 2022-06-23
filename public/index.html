@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chat App</title>
+    <link rel="icon" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/styles.min.css">
+</head>
+
+<body>
+    <div class="centered-form">
+        <div class="centered-form__box">
+            <h1>Join</h1>
+            <form class="form" id="myForm">
+                <label>Username</label>
+                <input type="text" id="username" name="username" placeholder="username" required autocomplete="off">
+                <label>Room</label>
+                <input type="text" id="room" name="room" placeholder="room" required autocomplete="off">
+                <label>Password</label>
+                <input type="password" id="password" name="password" placeholder="password" required autocomplete="off">
+                <button type="submit">Submit</button>
+            </form>
+            <script>
+                const myForm = document.getElementById('myForm');
+                myForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const name = myForm.elements['username']
+                    const password = myForm.elements['password']
+                    const room = myForm.elements['room']
+                    const userDetails = {
+                        username: name.value,
+                        password: password.value,
+                        room: room.value
+                    }
+                    console.log(userDetails)
+                    fetch('http://localhost:8687/user', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        },
+                        body: JSON.stringify(userDetails)
+                    }).then(function(response) {
+                        return response.text()
+                    }).then(function(text) {
+                        localStorage.setItem('jwt', text)
+                        window.location.href = "http://localhost:8687/chat.html";
+                    }).catch(function(error) {
+                        console.log(error);
+                    })
+                })
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>
