@@ -48,7 +48,7 @@ export const location = async (ctx: any) => {
 export const locationSearch = async (message: any,) => {
   try {
     let Obj: any = {}
-    Obj.count = true
+    Obj.check = true
     let data: any;
     let word: string;
     if (message.message.includes("@")) {

@@ -25,6 +25,7 @@ app.use(bodyparser());
 
 router.post("/user", user);
 router.post("/location", location);
+
 app.use(router.routes());
 app.use(cors());
 
@@ -64,25 +65,13 @@ io.on("connection", (socket: any) => {
       return callback("profanity is not allowed");
     }
     let obj: any={};
-    let check: any;
+    io.to(token.room).emit("message", generateMessage(token.username, message.message));
+    let check=false;
     if (message.message.includes("@")) {
       const search=await locationSearch(message)
       obj.latitude=search.obj?.latitude;
       obj.longitude=search.obj?.longitude
-      check=search.count
-    }
-    io.to(token.room).emit("message", generateMessage(token.username, message.message));
-    if(message.message.includes("@mailCf")){
-      io.to(token.room).emit("message",generateMessage("Admin"," Let's reduce Carbon Footprint. Below are some links to reduce carbon footprint "))
-      io.to(token.room).emit("locationMessage", generateLocationMessage(`Admin`, `https://eco-age.com/resources/how-reduce-carbon-footprint-your-emails`));
-      io.to(token.room).emit("disappear", generateMessage("Admin","disappear"));
-    }
-    if(message.message.includes("@websiteCf")){
-      io.to(token.room).emit("message",generateMessage("Admin"," Let's reduce Carbon Footprint. Below are some links to reduce carbon footprint "))
-      io.to(token.room).emit("locationMessage", generateLocationMessage(`Admin`, `https://vwo.com/blog/reduce-website-carbon-footprint/`));
-      io.to(token.room).emit("locationMessage", generateLocationMessage(`Admin`, `https://builtin.com/software-engineering-perspectives/reducing-website-carbon-footprint`));
-      io.to(token.room).emit("locationMessage", generateLocationMessage(`Admin`, `https://www.culturehive.co.uk/resources/sustainable-web-design-how-to-reduce-your-websites-carbon-footprint/`));
-      io.to(token.room).emit("disappear", generateMessage("Admin","disappear"));
+      check=search.check
     }
     callback("delivered");
     if (check === true) {

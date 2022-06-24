@@ -79,9 +79,9 @@ socket.on('locationMessage', (url) => {
 socket.on('disappear', (list) => {
     if (list.text == 'disappear') {
         setTimeout(() => {
-            console.log("executed well")
             window.location.reload()
-        }, 80000)
+            autoscroll()
+        }, 10000)
     }
 })
 
@@ -100,12 +100,10 @@ $messageForm.addEventListener('submit', (e) => {
     $messageFormButton.setAttribute('disabled', 'disabled')
 
     const message = e.target.elements.message.value
-    console.log(message, "message")
     navigator.geolocation.getCurrentPosition((position) => {
         longitude = position.coords.longitude
         latitude = position.coords.latitude
         const msg = { message: message, token: token, latitude: latitude, longitude: longitude }
-        console.log(msg, "msg")
         socket.emit('sendMessage', msg, (error) => {
             $messageFormButton.removeAttribute('disabled')
             $messageFormInput.value = ''
@@ -114,8 +112,6 @@ $messageForm.addEventListener('submit', (e) => {
             if (error) {
                 return console.log(error)
             }
-
-            console.log('Message delivered!')
         })
     })
 })
@@ -126,7 +122,6 @@ $sendLocationButton.addEventListener('click', () => {
     }
     const token = localStorage.getItem("jwt")
     $sendLocationButton.setAttribute('disabled', 'disabled')
-    console.log("60 chat.js")
     navigator.geolocation.getCurrentPosition((position) => {
         socket.emit('sendLocation', {
             latitude: position.coords.latitude,
@@ -141,11 +136,7 @@ $sendLocationButton.addEventListener('click', () => {
 
 socket.emit('join', { token: token }, (data) => {
     if (data) {
-
-
-
         function alertFunc() {
-            console.log("it's entering into the chat.js")
             var userDetails = {}
             navigator.geolocation.getCurrentPosition((position) => {
                 const token = localStorage.getItem('jwt')
@@ -154,7 +145,6 @@ socket.emit('join', { token: token }, (data) => {
                     longitude: position.coords.longitude,
                     token: token
                 }
-                console.log(userDetails, "userdetails 120")
                 fetch('http://localhost:8687/location', {
                     method: 'POST',
                     headers: {
