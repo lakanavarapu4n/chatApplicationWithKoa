@@ -1,3 +1,4 @@
+
 name: development
 on:
   push:
@@ -17,7 +18,4 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-      - name: Linter Check
-        run: npm run eslint
-          
-  
+
