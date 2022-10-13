@@ -1,5 +1,4 @@
 
-
 name: development
 on:
   push:
@@ -19,4 +18,4 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-          
+
