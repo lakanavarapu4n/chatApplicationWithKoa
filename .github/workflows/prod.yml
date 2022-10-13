@@ -1,0 +1,21 @@
+
+name: master
+on:
+  push:
+    branches: [ "prod" ]
+jobs:
+  deploy-to-test:
+    name: Deploying to Prod
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: set Up node version
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.8.0
+          id: node
+      - name: checkout code into nodemodule directory
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          npm install
