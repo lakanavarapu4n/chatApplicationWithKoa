@@ -3,6 +3,7 @@ import knex from "../src/database/db";
 import { v4 as uuidv4 } from "uuid";
 
 
+
 export const user = async (ctx: any) => {
   try {
     ctx.body = jwt.sign(ctx.request.body, "secret");
