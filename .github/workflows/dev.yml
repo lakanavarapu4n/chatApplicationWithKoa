@@ -1,21 +1,22 @@
+name: Deploy partner-product-orch
 
-name: development
 on:
   push:
-    branches: [ "development" ]
+    branches:
+      - main
+      - development
+  pull_request:
+    branches:
+      - '*'
+
 jobs:
-  deploy-to-test:
-    name: deploy to development
+  build:
+    name: Build and Test
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
       - name: set Up node version
         uses: actions/setup-node@v1
         with:
-          node-version: 16.8.0
-          id: node
-      - name: checkout code into nodemodule directory
-        uses: actions/checkout@v2
-      - name: Install dependencies
-        run: |
-          npm install
-
+          node-version: 16.x
